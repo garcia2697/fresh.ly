@@ -14,6 +14,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/js/datepicker-full.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <script src="assets/js/script.js"></script>
 
 </head>
@@ -55,14 +56,14 @@
     <h2>fresh.ly</h2>
     <table class="table" style="width:75%">
         <thead>
-            <tr>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-                <th>Sunday</th>
+            <tr id="headerRow">
+                <th id="day" data-dayNum="0">Monday</th>
+                <th id="day" data-dayNum="1">Tuesday</th>
+                <th id="day" data-dayNum="2">Wednesday</th>
+                <th id="day" data-dayNum="3">Thursday</th>
+                <th id="day" data-dayNum="4">Friday</th>
+                <th id="day" data-dayNum="5">Saturday</th>
+                <th id="day" data-dayNum="6">Sunday</th>
             </tr>
         <tbody>
             <tr>

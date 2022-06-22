@@ -69,18 +69,28 @@ async function getNutritionInfo (foodEntry) {
   $('#result-mount').attr('hidden', false)
 }
 
+// Utils
+// This function will return the date of the monday ON OR BEFORE the provided date. This gives us an aligned date to build the UI from.
+const getAlignedStartDate = (startDate) =>
+  Array.from(Array(7).keys())
+    .map(dt => startDate.subtract(dt, 'day'))
+    .filter((date) => date.format('dddd') === 'Monday')[0]
+
+// This does the same as above but returns the whole week
+const getAlignedWeek = (startDate) =>
+  Array.from(Array(7).keys())
+    .map(dt => getAlignedStartDate(startDate).add(dt, 'day'))
+
 // Constants
 const LOCAL_STORE_KEY = 'state' // Doesn't really matter
 
 function loadState () {
   return localStorage.getItem(LOCAL_STORE_KEY) || { // Return the state in localStorage OR IF NULL return a default state object
     // The default state object, nothing here for now
-
   }
 }
 
 function generateProductList (response) {
-  // `<li><img src="${product.image}"></img><a>${product.title}</a></li>`
   return response.products.forEach((product) => {
     const elem = document.createElement('div')
     elem.id = 'productCard'
@@ -95,7 +105,7 @@ function generateProductList (response) {
         </figure>
       </div>
       <div class="media-content">
-        <p class="title is-4">${product.title}</p>
+        <p id="product-title" class="title is-4">${product.title}</p>
         <p>Expiration Date</p>
         <div class="control flex">
             <input id="expDateInput" class="input" type="text" readonly>
@@ -106,7 +116,16 @@ function generateProductList (response) {
     </div>
   </div>
 `
-
+    const addProduct = (e) => {
+      const productCard = e.target.closest('#productCard')
+      const product = {
+        productId: productCard.dataset.id,
+        productName: productCard.querySelector('#product-title').textContent,
+        expirationDate: productCard.querySelector('#expDateInput').value
+      }
+      console.log(product)
+    }
+    elem.querySelector('#addItemButton').onclick = addProduct
     $('#results-list').append(elem)
     const addItemButton = elem.querySelector('#expDateInput')
     const datepicker = new Datepicker(addItemButton, {
@@ -114,16 +133,26 @@ function generateProductList (response) {
       showOnFocus: false,
       autohide: true
     })
+    datepicker.setDate(Date.now())
+    datepicker.update()
   })
 }
 
 function init () {
   // eslint-disable-next-line no-unused-vars
   const state = loadState()
+
+  // Event handlers
   $('#searchProductButton').on('click', () => {
     const productName = $('#productNameInput').val()
     console.log(`Doing search for ${productName}`)
     getNutritionInfo(productName)
+  })
+
+  // Setup UI Dates
+  const alignedWeek = getAlignedWeek(dayjs())
+  alignedWeek.forEach((day, index) => {
+    document.querySelector(`[data-dayNum="${index}"]`).textContent = day.format('dddd MM/DD/YY')
   })
 }
 
