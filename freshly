@@ -36,6 +36,7 @@ tr {
   <tr>
       <td>
       <button onclick="myCreateFunction()">+</button> 
+      <input type+="text"/>
       
       
       </td>
