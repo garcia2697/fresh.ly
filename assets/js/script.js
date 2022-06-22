@@ -23,3 +23,20 @@ function nutritionApiTest () {
   })
 }
 nutritionApiTest()
+
+// Constants
+const LOCAL_STORE_KEY = 'state' // Doesn't really matter
+
+function loadState () {
+  return localStorage.getItem(LOCAL_STORE_KEY) || { // Return the state in localStorage OR IF NULL return a default state object
+    // The default state object, nothing here for now
+
+  }
+}
+
+function init () {
+  // eslint-disable-next-line no-unused-vars
+  const state = loadState()
+}
+
+init()
