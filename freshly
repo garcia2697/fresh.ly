@@ -3,18 +3,18 @@
 <style>
 table, th, td {
   border:1px solid #8dff9c;
-  background-color: #8dff9c
-  padding:5px;
+  background-color: #8dff9c;
+  padding: 5px;
   
 }
 td, th {
-    border: 1px solid
+    border: 1px solid;
     text-align: left;
     padding: 10px;
 
 }
 tr {
-  border:1px solid #8dff9c;
+  border: 1px solid #8dff9c;
   background-color: #8dff9c;
    
 }
