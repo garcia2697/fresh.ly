@@ -14,3 +14,7 @@ tr {
     border: 1px solid #8dff9c;
     background-color: #8dff9c;
 }
+.flex {
+    display: flex;
+    flex-direction: row;
+ }

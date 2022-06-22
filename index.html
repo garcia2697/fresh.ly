@@ -24,14 +24,17 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Enter Product Information</p>
+                    <p class="modal-card-title">Search Product</p>
                     <button class="delete" aria-label="close"></button>
                 </header>
                 <section class="modal-card-body">
                     <div>
-                        <p>Product name: <input id="productNameInput" class="input" type="text"
-                                placeholder="Enter product name..."></p>
-                        <p><button id="searchProductButton" class="button is-info">Search</button></p>
+                        
+                        <div class="flex">
+                            <input id="productNameInput" class="input" type="text"
+                                placeholder="Enter product name...">
+                        <button id="searchProductButton" class="button is-info">Search</button>
+                        </div>
                         <div id="result-mount" hidden="true">
                             <aside class="menu">
                                 <p class="menu-label">
@@ -43,7 +46,7 @@
                         </div>
                     </div>
                 </section>
-                <footer class="modal-card-foot">
+                <footer class="modal-card-foot" style="justify-content: right;">
                     <button class="button is-danger">Close</button>
                 </footer>
             </div>
