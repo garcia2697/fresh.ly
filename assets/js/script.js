@@ -107,9 +107,6 @@ function init () {
     console.log(`Doing search for ${productName}`)
     getNutritionInfo(productName)
   })
-  $(function () {
-    $('#datepicker').datepicker()
-  })
 }
 
 // Modal stuff
