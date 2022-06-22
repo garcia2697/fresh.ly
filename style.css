@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    height: 100%;
+}
+body{
+    width: 100%;
+}
+.img-container{
+    background-image: url('./Save-Money-On-Groceries_UBC-Food-Services\ \(1\).jpg');
+    height: 110%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+#centered-h2{
+    position: center;
+}
