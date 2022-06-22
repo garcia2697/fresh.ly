@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // Script Placeholder
 
-async function getNutritionInfo(foodEntry) {
+async function getNutritionInfo (foodEntry) {
   /* const options = {
     method: 'GET',
     url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/products/search',
@@ -72,7 +72,7 @@ async function getNutritionInfo(foodEntry) {
 // Constants
 const LOCAL_STORE_KEY = 'state' // Doesn't really matter
 
-function loadState() {
+function loadState () {
   return localStorage.getItem(LOCAL_STORE_KEY) || { // Return the state in localStorage OR IF NULL return a default state object
     // The default state object, nothing here for now
 
@@ -83,6 +83,8 @@ function generateProductList (response) {
   // `<li><img src="${product.image}"></img><a>${product.title}</a></li>`
   return response.products.forEach((product) => {
     const elem = document.createElement('div')
+    elem.id = 'productCard'
+    elem.dataset.id = product.id
     elem.className = 'card'
     elem.innerHTML = `
   <div class="card-content">
@@ -96,7 +98,7 @@ function generateProductList (response) {
         <p class="title is-4">${product.title}</p>
         <p>Expiration Date</p>
         <div class="control flex">
-            <input id="expDateInput" class="input" type="text" value="📅" readonly>
+            <input id="expDateInput" class="input" type="text" readonly>
             <button id='addItemButton' class="button is-primary">Add Product</button>
         </div>
       </div>
@@ -106,7 +108,7 @@ function generateProductList (response) {
 `
 
     $('#results-list').append(elem)
-    const addItemButton = elem.querySelector('#expDateInput');
+    const addItemButton = elem.querySelector('#expDateInput')
     const datepicker = new Datepicker(addItemButton, {
       title: 'Choose Expiration Date',
       showOnFocus: false,
@@ -115,7 +117,7 @@ function generateProductList (response) {
   })
 }
 
-function init() {
+function init () {
   // eslint-disable-next-line no-unused-vars
   const state = loadState()
   $('#searchProductButton').on('click', () => {
@@ -128,15 +130,15 @@ function init() {
 // Modal stuff
 document.addEventListener('DOMContentLoaded', () => {
   // Functions to open and close a modal
-  function openModal($el) {
+  function openModal ($el) {
     $el.classList.add('is-active')
   }
 
-  function closeModal($el) {
+  function closeModal ($el) {
     $el.classList.remove('is-active')
   }
 
-  function closeAllModals() {
+  function closeAllModals () {
     (document.querySelectorAll('.modal') || []).forEach(($modal) => {
       closeModal($modal)
     })
