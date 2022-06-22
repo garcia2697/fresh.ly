@@ -15,12 +15,12 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="assets/js/script.js"></script>
-    
+
 </head>
 
 <body>
     <div id="modalMount">
-        <div class="modal">
+        <div id="modal-js-example" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
@@ -28,33 +28,45 @@
                     <button class="delete" aria-label="close"></button>
                 </header>
                 <section class="modal-card-body">
-                    <input id="productNameInput" class="input" type="text" placeholder="Enter product name...">
-                    <p>Expiration Date: <input type="text" id="datepicker"></p>
+                    <div>
+                        <p>Product name: <input id="productNameInput" class="input" type="text"
+                                placeholder="Enter product name..."></p>
+                        <p><button id="searchProductButton" class="button is-info">Search</button></p>
+                        <div id="result-mount" hidden="true">
+                            <aside class="menu">
+                                <p class="menu-label">
+                                    Results
+                                </p>
+                                <ul class="menu-list" id="results-list">
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-success">Add Item</button>
-                    <button class="button">Cancel</button>
+                    <button class="button is-danger">Close</button>
                 </footer>
             </div>
         </div>
     </div>
     <h2>fresh.ly</h2>
-    <table style="width:75%">
-        <tr>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
-            <th>Sunday</th>
-        </tr>
-        <tr>
-            <td>
-                <button id='addFood' class="js-modal-trigger" data-target="modal-js-example">+</button>
-
-
-            </td>
+    <table class="table" style="width:75%">
+        <thead>
+            <tr>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+            </tr>
+        <tbody>
+            <tr>
+                <td>
+                    <button id='addFood' data-target="modal-js-example" class="js-modal-trigger">+</button>
+                </td>
+            </tr>
 
     </table>
 </body>
