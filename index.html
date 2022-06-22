@@ -2,17 +2,42 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>fresh.ly</title>
-    <!-- CSS only -->
-    <!-- Compiled and minified Materialize CSS -->
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    
 </head>
 
 <body>
+    <div id="modalMount">
+        <div class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Enter Product Information</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <input id="productNameInput" class="input" type="text" placeholder="Enter product name...">
+                    <p>Expiration Date: <input type="text" id="datepicker"></p>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Add Item</button>
+                    <button class="button">Cancel</button>
+                </footer>
+            </div>
+        </div>
+    </div>
     <h2>fresh.ly</h2>
     <table style="width:75%">
         <tr>
@@ -26,17 +51,12 @@
         </tr>
         <tr>
             <td>
-                <button id='addFood'>+</button>
+                <button id='addFood' class="js-modal-trigger" data-target="modal-js-example">+</button>
 
 
             </td>
 
     </table>
 </body>
-
-<!-- Compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.slim.js" integrity="sha512-HNbo1d4BaJjXh+/e6q4enTyezg5wiXvY3p/9Vzb20NIvkJghZxhzaXeffbdJuuZSxFhJP87ORPadwmU9aN3wSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="assets/js/script.js"></script>
 
 </html>
