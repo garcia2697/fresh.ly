@@ -1,21 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+<style>
+table, th, td {
+  border:1px solid #8dff9c;
+  background-color: #8dff9c;
+  padding:5px;
+  
+};
+td, th {
+    border: 1px solid;
+    text-align: left;
+    padding: 10px;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Coding Quiz</title>
-    <!-- CSS only -->
-    <!-- Compiled and minified Materialize CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-            
-</head>
-
+}
+tr {
+  border:1px solid #8dff9c;
+  background-color: #8dff9c;
+   
+}
+</style>
 <body>
-    
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-</body>
 
+<h2>fresh.ly</h2>
+
+<table style="width:100%">
+  <tr>
+    <th>Monday</th>
+    <th>Tuesday</th>
+    <th>Wednesday</th>
+    <th>Thursday</th>
+    <th>Friday</th>
+    <th>Saturday</th>
+    <th>Sunday</th>
+  </tr>
+  <tr>
+        <td class="Monday">
+            <div class="container">
+                
+                <div>
+                    
+                    <!-- Holds all the meals for the day -->
+                    <div class="listHolder">
+                        <ul class="list">  
+                        </ul>
+                    </div>
+
+
+                    <div class="formHolder">
+
+                      <div class="col">
+                          <input type="text" id="addInput">
+                      </div>
+                  
+                      <div class="col">
+                      <button type="button" id="addBtn" class="btn-primary">Add Item</button>
+                      </div>
+                
+                    </div>
+                </div>
+            </div>
+
+        </td>
+  
+</table>
+
+
+
+<script src="assets/js/script.js"></script>
+</body>
 </html>
