@@ -1,5 +1,5 @@
 {
-  "name": "coding-quiz",
+  "name": "freshly",
   "version": "1.0.0",
   "description": "",
   "main": "assets/js/script.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/udidifier/codequiz.git"
+    "url": "git+https://github.com/garcia2697/fresh.ly"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/udidifier/codequiz/issues"
+    "url": "https://github.com/garcia2697/fresh.ly/issues"
   },
-  "homepage": "https://github.com/udidifier/codequiz#readme",
+  "homepage": "https://github.com/garcia2697/fresh.ly#readme",
   "devDependencies": {
     "eslint": "^8.17.0",
     "eslint-config-standard": "^17.0.0",

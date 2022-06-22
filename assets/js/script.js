@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
 // Script Placeholder
 
-function nutritionApiTest () {
+function getNutritionInfo (foodEntry) {
   const options = {
     method: 'GET',
     url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/products/search',
     params: {
-      query: 'Cool Ranch Doritos',
+      query: foodEntry,
       offset: '0',
       number: '1'
     },
@@ -22,7 +22,6 @@ function nutritionApiTest () {
     console.error(error)
   })
 }
-nutritionApiTest()
 
 // Constants
 const LOCAL_STORE_KEY = 'state' // Doesn't really matter
@@ -37,6 +36,9 @@ function loadState () {
 function init () {
   // eslint-disable-next-line no-unused-vars
   const state = loadState()
+  $('#addFood').on('click', () => {
+    
+  })
 }
 
 init()
