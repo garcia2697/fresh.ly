@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<style>
+table, th, td {
+  border:1px solid #8dff9c;
+  background-color: #8dff9c
+  padding:5px;
+  
+}
+td, th {
+    border: 1px solid
+    text-align: left;
+    padding: 10px;
+
+}
+tr {
+  border:1px solid #8dff9c;
+  background-color: #8dff9c;
+   
+}
+</style>
+<body>
+
+<h2>fresh.ly</h2>
+
+<table style="width:100%">
+  <tr>
+    <th>Monday</th>
+    <th>Tuesday</th>
+    <th>Wednesday</th>
+    <th>Thursday</th>
+    <th>Friday</th>
+    <th>Saturday</th>
+    <th>Sunday</th>
+  </tr>
+  <tr>
+      <td>
+      <button onclick="myCreateFunction()">+</button> 
+      
+      
+      </td>
+  
+</table>
+
+
+
+
+</body>
+</html>
