@@ -3,7 +3,7 @@
 
 async function getNutritionInfo (state, foodEntry) {
   // The real API code
-  /* const options = {
+  const options = {
     method: 'GET',
     url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/products/search',
     params: {
@@ -19,13 +19,17 @@ async function getNutritionInfo (state, foodEntry) {
 
   await axios.request(options).then(function (response) {
     console.log(response.data)
-    $('#results-list').html(generateProductList(response.data))
+    const modal = document.getElementById('modal-js-example')
+    const startingDay = moment(modal.dataset.startingday)
+    resetProductSearchModal(modal, startingDay)
+    generateProductSearchList(state, startingDay, response)
     $('#result-mount').attr('hidden', false)
   }).catch(function (error) {
     console.error(error)
     return null
-  }) */
-  response = { // temp response so we're not hitting the api on test
+  })
+  // temp response so we're not hitting the api on test
+  /* response = {
     type: 'product',
     products: [
       {
@@ -65,29 +69,25 @@ async function getNutritionInfo (state, foodEntry) {
     processingTimeMs: 49,
     expires: 1656139919055,
     isStale: false
-  } // temp response so we're not hitting api on test
-  const modal = document.getElementById('modal-js-example')
-  const startingDay = moment(modal.dataset.startingday)
-  $('#results-list').html(generateProductSearchList(state, startingDay, response))
-  $('#result-mount').attr('hidden', false)
+  } */ // temp response so we're not hitting api on test
 }
 
 // Utils
 // This function will return the date of the monday ON OR BEFORE the provided date. This gives us an aligned date to build the UI from.
 const getAlignedStartDate = (startDate) =>
   Array.from(Array(7).keys())
-    .map(dt => startDate.clone().subtract(dt, 'day'))
+    .map(dt => startDate.clone().subtract(dt, 'days'))
     .filter((date) => date.format('dddd') === 'Monday')[0]
 
 // This does the same as above but returns the whole week
 const getAlignedWeek = (startDate) =>
   Array.from(Array(7).keys())
-    .map(dt => getAlignedStartDate(startDate).add(dt, 'day'))
+    .map(dt => getAlignedStartDate(startDate).add(dt, 'days'))
 
 const getDayIndex = (day) => {
   startDate = getAlignedStartDate(day)
   return Array.from(Array(7).keys())
-    .filter(dt => startDate.clone().add(dt, 'day').isSame(day, 'day'))[0]
+    .filter(dt => startDate.clone().add(dt, 'days').isSame(day, 'days'))[0]
 }
 
 function loadDatePage (date) {
@@ -119,23 +119,23 @@ function addProduct (state, product) {
 
 function refreshViewProducts (state) {
   const tableSecondRow = document.getElementById('tableContentRow')
-  $('#productElement').remove()
+  $('.productElement').remove()
   const clickHandler = (e) => {
-    const modal = document.getElementById('modal-js-example')
-    resetModal(modal, e.currentTarget.dataset.startingday)
+    const modal = document.getElementById('modal-productinfo')
+    resetProductInfoModal(modal)
     modal.classList.add('is-active')
   }
   const monday = getAlignedStartDate(state.currentMonday)
   state.trackedProducts
     .forEach((product) => {
       product.dateRange.forEach((date, isExpiration) => {
-        if (moment(date).isBefore(monday.add(7, 'day'), 'day') && (moment(date).isSameOrAfter(monday, 'day'))) {
-          const tr = tableSecondRow.querySelector(`[data-daynum*="${getDayIndex(date)}"]`)
+        const currentDate = moment(date)
+        if (currentDate.isBetween(monday.clone().subtract(1, 'days'), monday.clone().add(7, 'days'), 'day')) {
+          const tr = tableSecondRow.querySelector(`[data-daynum*="${getDayIndex(currentDate)}"]`)
           const newProduct = document.createElement('button')
-          newProduct.id = 'productElement'
-          newProduct.classList = 'button is-info'
-          // newProduct.style = 'width: 20px; height: 20px'
-          newProduct.innerHTML = product.productName
+          newProduct.classList = `productElement button ${isExpiration ? 'is-danger' : 'is-info'}`
+          newProduct.style = 'width: 100px; height: 35px'
+          newProduct.innerHTML = `${isExpiration ? '(Exp)' : ''} ${product.productName.slice(0, 7)}`
           newProduct.onclick = clickHandler
           tr.prepend(newProduct)
         }
@@ -143,7 +143,7 @@ function refreshViewProducts (state) {
     })
 }
 function generateProductSearchList (state, startDay, response) {
-  return response.products.forEach((product) => {
+  response.data.products.forEach((product) => {
     const elem = document.createElement('div')
     elem.id = 'productCard'
     elem.dataset.id = product.id
@@ -197,25 +197,26 @@ function generateProductSearchList (state, startDay, response) {
   })
 }
 
-function resetModal (modal, startingDay) {
+function resetProductSearchModal (modal, startingDay) {
   modal.querySelector('#results-list').innerHTML = ''
   modal.dataset.startingday = startingDay
+}
+function resetProductInfoModal (modal) {
 }
 function generateTableProductRow (state) {
   const week = getAlignedWeek(state.currentMonday)
   const tableSecondRow = document.getElementById('tableContentRow')
-  $('addFoodElement').remove()
+  $('.addFoodElement').remove()
   const clickHandler = (e) => {
     const modal = document.getElementById('modal-js-example')
-    resetModal(modal, e.currentTarget.dataset.startingday)
+    resetProductSearchModal(modal, e.currentTarget.dataset.startingday)
     modal.classList.add('is-active')
   }
   week.forEach((day, index) => {
     const tr = tableSecondRow.querySelector(`[data-daynum*="${index}"]`)
     const newProduct = document.createElement('button')
-    newProduct.id = 'addFoodElement'
     newProduct.dataset.startingday = day.format()
-    newProduct.classList = 'button is-info'
+    newProduct.classList = 'addFoodElement button is-info'
     newProduct.style = 'width: 20px; height: 20px'
     newProduct.innerHTML = '+'
     newProduct.onclick = clickHandler
@@ -234,22 +235,26 @@ function init () {
   $('#nextPageBtn').on('click', () => {
     state.currentMonday.add(1, 'week')
     loadDatePage(state.currentMonday)
+    refreshViewProducts(state)
     saveState(state)
   })
   $('#nowPageBtn').on('click', () => {
     state.currentMonday = getAlignedStartDate(moment())
     loadDatePage(state.currentMonday)
+    refreshViewProducts(state)
     saveState(state)
   })
   $('#prevPageBtn').on('click', () => {
     state.currentMonday.subtract(1, 'week')
     loadDatePage(state.currentMonday)
+    refreshViewProducts(state)
     saveState(state)
   })
 
   // Setup UI
   loadDatePage(state.currentMonday)
   generateTableProductRow(state)
+  refreshViewProducts(state)
 }
 
 // Modal stuff
