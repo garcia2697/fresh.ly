@@ -92,10 +92,15 @@ function loadDatePage (date) {
 const LOCAL_STORE_KEY = 'state' // Doesn't really matter
 
 function loadState () {
-  return localStorage.getItem(LOCAL_STORE_KEY) || { // Return the state in localStorage OR IF NULL return a default state object
+  const state = JSON.parse(localStorage.getItem(LOCAL_STORE_KEY)) || { // Return the state in localStorage OR IF NULL return a default state object
     trackedProducts: [],
     currentMonday: getAlignedStartDate(moment())
   }
+  state.currentMonday = moment(state.currentMonday)
+  return state
+}
+function saveState (state) {
+  localStorage.setItem(LOCAL_STORE_KEY, JSON.stringify(state))
 }
 
 function generateProductList (response) {
@@ -165,14 +170,17 @@ function init () {
   $('#nextPageBtn').on('click', () => {
     state.currentMonday.add(1, 'week')
     loadDatePage(state.currentMonday)
+    saveState(state)
   })
   $('#nowPageBtn').on('click', () => {
     state.currentMonday = getAlignedStartDate(moment())
     loadDatePage(state.currentMonday)
+    saveState(state)
   })
   $('#prevPageBtn').on('click', () => {
     state.currentMonday.subtract(1, 'week')
     loadDatePage(state.currentMonday)
+    saveState(state)
   })
 
   // Setup UI Dates
