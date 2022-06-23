@@ -18,7 +18,7 @@ function addLists(){
         ul.appendChild(li);
         createBtn(li);
     }
-}
+};
 
 addBtn.addEventListener('click',()=>{
     addLists();
