@@ -6,16 +6,9 @@ table,th,td {
 .center {
     margin-left: auto;
     margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
 }
-.flex {
-    display: flex;
-}
-td,th {
-    border: 1px solid;
-    text-align: left;
-    padding: 10px;
-}
-
 tr {
     border: 1px solid #8dff9c;
     background-color: #8dff9c;
