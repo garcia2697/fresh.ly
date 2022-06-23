@@ -166,6 +166,10 @@ function init () {
     state.currentMonday.add(1, 'week')
     loadDatePage(state.currentMonday)
   })
+  $('#nowPageBtn').on('click', () => {
+    state.currentMonday = getAlignedStartDate(moment())
+    loadDatePage(state.currentMonday)
+  })
   $('#prevPageBtn').on('click', () => {
     state.currentMonday.subtract(1, 'week')
     loadDatePage(state.currentMonday)
