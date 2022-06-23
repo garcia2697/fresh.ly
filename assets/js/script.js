@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // Script Placeholder
 
-async function getNutritionInfo(foodEntry) {
+async function getNutritionInfo (foodEntry) {
   // The real API code
   /* const options = {
     method: 'GET',
@@ -25,7 +25,7 @@ async function getNutritionInfo(foodEntry) {
     console.error(error)
     return null
   }) */
-  response = { //temp response so we're not hitting the api on test
+  response = { // temp response so we're not hitting the api on test
     type: 'product',
     products: [
       {
@@ -74,7 +74,7 @@ async function getNutritionInfo(foodEntry) {
 // This function will return the date of the monday ON OR BEFORE the provided date. This gives us an aligned date to build the UI from.
 const getAlignedStartDate = (startDate) =>
   Array.from(Array(7).keys())
-    .map(dt => startDate.subtract(dt, 'day'))
+    .map(dt => startDate.clone().subtract(dt, 'day'))
     .filter((date) => date.format('dddd') === 'Monday')[0]
 
 // This does the same as above but returns the whole week
@@ -82,16 +82,23 @@ const getAlignedWeek = (startDate) =>
   Array.from(Array(7).keys())
     .map(dt => getAlignedStartDate(startDate).add(dt, 'day'))
 
+function loadDatePage (date) {
+  const alignedWeek = getAlignedWeek(date)
+  alignedWeek.forEach((day, index) => {
+    document.querySelector(`[data-dayNum="${index}"]`).textContent = day.format('dddd MM/DD/YY')
+  })
+}
 // Constants
 const LOCAL_STORE_KEY = 'state' // Doesn't really matter
 
-function loadState() {
+function loadState () {
   return localStorage.getItem(LOCAL_STORE_KEY) || { // Return the state in localStorage OR IF NULL return a default state object
-    // The default state object, nothing here for now
+    trackedProducts: [],
+    currentMonday: getAlignedStartDate(moment())
   }
 }
 
-function generateProductList(response) {
+function generateProductList (response) {
   return response.products.forEach((product) => {
     const elem = document.createElement('div')
     elem.id = 'productCard'
@@ -122,52 +129,64 @@ function generateProductList(response) {
       const product = {
         productId: productCard.dataset.id,
         productName: productCard.querySelector('#product-title').textContent,
-        expirationDate: productCard.querySelector('#expDateInput').value
+        dateRange: productCard.querySelector('#expDateInput').value
+          .split(' - ')
+          .map((date) => moment(date, 'MM/DD/YYYY'))
       }
       console.log(product)
     }
     $('#results-list').append(elem)
     const addItemButton = elem.querySelector('#expDateInput')
-    const datepicker = new Datepicker(addItemButton, {
-      title: 'Choose Expiration Date',
-      showOnFocus: false,
-      autohide: true
+
+    const picker = new Lightpick({
+      field: addItemButton,
+      singleDate: false,
+      selectForward: true,
+      onSelect: function (start, end) {
+        let str = ''
+        str += start ? start.format('MM/DD/YYYY') + ' - ' : ''
+        str += end ? end.format('MM/DD/YYYY') : '...'
+        addItemButton.value = str
+      }
     })
-    datepicker.setDate(Date.now())
-    datepicker.update()
+    picker.setDateRange(new Date(), moment().add(1, 'day'))
   })
 }
 
-function init() {
+function init () {
   // eslint-disable-next-line no-unused-vars
   const state = loadState()
-
   // Event handlers
   $('#searchProductButton').on('click', () => {
     const productName = $('#productNameInput').val()
     console.log(`Doing search for ${productName}`)
     getNutritionInfo(productName)
   })
+  $('#nextPageBtn').on('click', () => {
+    state.currentMonday.add(1, 'week')
+    loadDatePage(state.currentMonday)
+  })
+  $('#prevPageBtn').on('click', () => {
+    state.currentMonday.subtract(1, 'week')
+    loadDatePage(state.currentMonday)
+  })
 
   // Setup UI Dates
-  const alignedWeek = getAlignedWeek(dayjs())
-  alignedWeek.forEach((day, index) => {
-    document.querySelector(`[data-dayNum="${index}"]`).textContent = day.format('dddd MM/DD/YY')
-  })
+  loadDatePage(state.currentMonday)
 }
 
 // Modal stuff
 document.addEventListener('DOMContentLoaded', () => {
   // Functions to open and close a modal
-  function openModal($el) {
+  function openModal ($el) {
     $el.classList.add('is-active')
   }
 
-  function closeModal($el) {
+  function closeModal ($el) {
     $el.classList.remove('is-active')
   }
 
-  function closeAllModals() {
+  function closeAllModals () {
     (document.querySelectorAll('.modal') || []).forEach(($modal) => {
       closeModal($modal)
     })

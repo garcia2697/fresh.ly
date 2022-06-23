@@ -8,14 +8,13 @@
     <title>fresh.ly</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/css/datepicker-bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/lightpick/css/lightpick.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/js/datepicker-full.min.js"></script>
-    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="assets/lightpick/lightpick.js"></script>
     <script src="assets/js/script.js"></script>
 
 </head>
@@ -53,27 +52,33 @@
             </div>
         </div>
     </div>
-    <h1 class="title">fresh.ly</h1>
-    <h2 class="subtitle">A nutrition tracker.</h2>
-    <table class="table" style="width:75%">
-        <thead>
-            <tr id="headerRow">
-                <th id="day" data-dayNum="0">Monday</th>
-                <th id="day" data-dayNum="1">Tuesday</th>
-                <th id="day" data-dayNum="2">Wednesday</th>
-                <th id="day" data-dayNum="3">Thursday</th>
-                <th id="day" data-dayNum="4">Friday</th>
-                <th id="day" data-dayNum="5">Saturday</th>
-                <th id="day" data-dayNum="6">Sunday</th>
-            </tr>
-        <tbody>
-            <tr>
-                <td>
-                    <button id='addFood' data-target="modal-js-example" class="js-modal-trigger">+</button>
-                </td>
-            </tr>
+    <div style="text-align:center; justify-content: center; align-content: center;">
+        <h1 class="title">fresh.ly</h1>
+        <h2 class="subtitle">A nutrition tracker.</h2>
+        <div>
+            <table class="table center" style="width:75%">
+                <thead>
+                    <tr id="headerRow">
+                        <th id="day" data-dayNum="0">Monday</th>
+                        <th id="day" data-dayNum="1">Tuesday</th>
+                        <th id="day" data-dayNum="2">Wednesday</th>
+                        <th id="day" data-dayNum="3">Thursday</th>
+                        <th id="day" data-dayNum="4">Friday</th>
+                        <th id="day" data-dayNum="5">Saturday</th>
+                        <th id="day" data-dayNum="6">Sunday</th>
+                    </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            <button id='addFood' data-target="modal-js-example" class="js-modal-trigger">+</button>
+                        </td>
+                    </tr>
 
-    </table>
+            </table>
+        </div>
+        <button id="prevPageBtn" class="button is-info">&lt;</button>
+        <button id="nextPageBtn" class="button is-info">&gt;</button>
+    </div>
 </body>
 
 </html>
