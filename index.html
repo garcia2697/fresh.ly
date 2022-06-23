@@ -52,33 +52,42 @@
             </div>
         </div>
     </div>
-    <div style="text-align:center; justify-content: center; align-content: center;">
-        <h1 class="title">fresh.ly</h1>
-        <h2 class="subtitle">A nutrition tracker.</h2>
-        <div>
-            <table class="table center" style="width:75%">
-                <thead>
-                    <tr id="headerRow">
-                        <th id="day" data-dayNum="0">Monday</th>
-                        <th id="day" data-dayNum="1">Tuesday</th>
-                        <th id="day" data-dayNum="2">Wednesday</th>
-                        <th id="day" data-dayNum="3">Thursday</th>
-                        <th id="day" data-dayNum="4">Friday</th>
-                        <th id="day" data-dayNum="5">Saturday</th>
-                        <th id="day" data-dayNum="6">Sunday</th>
-                    </tr>
-                <tbody>
-                    <tr>
-                        <td>
-                            <button id='addFood' data-target="modal-js-example" class="js-modal-trigger">+</button>
-                        </td>
-                    </tr>
 
-            </table>
+    <div class="card">
+        <header class="card-header" style="text-align:center; justify-content: center; align-content: center;">
+            <div style="text-align:center; justify-content: center; align-content: center;">
+                <h1 class="title">fresh.ly</h1>
+                <h2 class="subtitle">A nutrition tracker.</h2>
+            </div>
+        </header>
+        <div class="card-content">
+            <div class="content">
+                <table class="table center" style="width:75%">
+                    <thead>
+                        <tr id="headerRow">
+                            <th id="day" data-dayNum="0">Monday</th>
+                            <th id="day" data-dayNum="1">Tuesday</th>
+                            <th id="day" data-dayNum="2">Wednesday</th>
+                            <th id="day" data-dayNum="3">Thursday</th>
+                            <th id="day" data-dayNum="4">Friday</th>
+                            <th id="day" data-dayNum="5">Saturday</th>
+                            <th id="day" data-dayNum="6">Sunday</th>
+                        </tr>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <button id='addFood' data-target="modal-js-example" class="js-modal-trigger">+</button>
+                            </td>
+                        </tr>
+
+                </table>
+            </div>
+            <footer class="card-footer" style="text-align:center; justify-content: center; align-content: center;">
+                <button id="prevPageBtn" class="button is-info">&lt;</button>
+                <button id="nowPageBtn" class="button is-info">&#128197;</button>
+                <button id="nextPageBtn" class="button is-info">&gt;</button>
+            </footer>
         </div>
-        <button id="prevPageBtn" class="button is-info">&lt;</button>
-        <button id="nowPageBtn" class="button is-info">&#128197;</button>
-        <button id="nextPageBtn" class="button is-info">&gt;</button>
     </div>
 </body>
 
