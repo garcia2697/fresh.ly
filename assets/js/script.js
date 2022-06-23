@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // Script Placeholder
 
-async function getNutritionInfo (foodEntry) {
+async function getNutritionInfo (state, foodEntry) {
   // The real API code
   /* const options = {
     method: 'GET',
@@ -68,7 +68,7 @@ async function getNutritionInfo (foodEntry) {
   } // temp response so we're not hitting api on test
   const modal = document.getElementById('modal-js-example')
   const startingDay = moment(modal.dataset.startingday)
-  $('#results-list').html(generateProductList(startingDay, response))
+  $('#results-list').html(generateProductSearchList(state, startingDay, response))
   $('#result-mount').attr('hidden', false)
 }
 
@@ -84,12 +84,19 @@ const getAlignedWeek = (startDate) =>
   Array.from(Array(7).keys())
     .map(dt => getAlignedStartDate(startDate).add(dt, 'day'))
 
+const getDayIndex = (day) => {
+  startDate = getAlignedStartDate(day)
+  return Array.from(Array(7).keys())
+    .filter(dt => startDate.clone().add(dt, 'day').isSame(day, 'day'))[0]
+}
+
 function loadDatePage (date) {
   const alignedWeek = getAlignedWeek(date)
   alignedWeek.forEach((day, index) => {
     document.querySelector(`[data-dayNum="${index}"]`).textContent = day.format('dddd MM/DD/YY')
   })
 }
+
 // Constants
 const LOCAL_STORE_KEY = 'state' // Doesn't really matter
 
@@ -104,8 +111,38 @@ function loadState () {
 function saveState (state) {
   localStorage.setItem(LOCAL_STORE_KEY, JSON.stringify(state))
 }
+function addProduct (state, product) {
+  state.trackedProducts.push(product)
+  refreshViewProducts(state)
+  saveState(state)
+}
 
-function generateProductList (startDay, response) {
+function refreshViewProducts (state) {
+  const tableSecondRow = document.getElementById('tableContentRow')
+  $('#productElement').remove()
+  const clickHandler = (e) => {
+    const modal = document.getElementById('modal-js-example')
+    resetModal(modal, e.currentTarget.dataset.startingday)
+    modal.classList.add('is-active')
+  }
+  const monday = getAlignedStartDate(state.currentMonday)
+  state.trackedProducts
+    .forEach((product) => {
+      product.dateRange.forEach((date, isExpiration) => {
+        if (moment(date).isBefore(monday.add(7, 'day'), 'day') && (moment(date).isSameOrAfter(monday, 'day'))) {
+          const tr = tableSecondRow.querySelector(`[data-daynum*="${getDayIndex(date)}"]`)
+          const newProduct = document.createElement('button')
+          newProduct.id = 'productElement'
+          newProduct.classList = 'button is-info'
+          // newProduct.style = 'width: 20px; height: 20px'
+          newProduct.innerHTML = product.productName
+          newProduct.onclick = clickHandler
+          tr.prepend(newProduct)
+        }
+      })
+    })
+}
+function generateProductSearchList (state, startDay, response) {
   return response.products.forEach((product) => {
     const elem = document.createElement('div')
     elem.id = 'productCard'
@@ -140,7 +177,7 @@ function generateProductList (startDay, response) {
           .split(' - ')
           .map((date) => moment(date, 'MM/DD/YYYY'))
       }
-      console.log(product)
+      addProduct(state, product)
     }
     $('#results-list').append(elem)
     const addItemButton = elem.querySelector('#expDateInput')
@@ -173,13 +210,16 @@ function generateTableProductRow (state) {
     resetModal(modal, e.currentTarget.dataset.startingday)
     modal.classList.add('is-active')
   }
-  week.forEach((day) => {
-    const elem = document.createElement('td')
-    elem.id = 'addFoodElement'
-    elem.innerHTML = `<button id='addFood' data-startingday="${day.format()}" class="button is-info" style="width: 20px; height: 20px">+</button>`
-    tableSecondRow.appendChild(elem)
-      .querySelector('#addFood')
-      .onclick = clickHandler
+  week.forEach((day, index) => {
+    const tr = tableSecondRow.querySelector(`[data-daynum*="${index}"]`)
+    const newProduct = document.createElement('button')
+    newProduct.id = 'addFoodElement'
+    newProduct.dataset.startingday = day.format()
+    newProduct.classList = 'button is-info'
+    newProduct.style = 'width: 20px; height: 20px'
+    newProduct.innerHTML = '+'
+    newProduct.onclick = clickHandler
+    tr.append(newProduct)
   })
 }
 
@@ -189,7 +229,7 @@ function init () {
   // Event handlers
   $('#searchProductButton').on('click', () => {
     const productName = $('#productNameInput').val()
-    getNutritionInfo(productName)
+    getNutritionInfo(state, productName)
   })
   $('#nextPageBtn').on('click', () => {
     state.currentMonday.add(1, 'week')
