@@ -66,7 +66,9 @@ async function getNutritionInfo (foodEntry) {
     expires: 1656139919055,
     isStale: false
   } // temp response so we're not hitting api on test
-  $('#results-list').html(generateProductList(response))
+  const modal = document.getElementById('modal-js-example')
+  const startingDay = moment(modal.dataset.startingday)
+  $('#results-list').html(generateProductList(startingDay, response))
   $('#result-mount').attr('hidden', false)
 }
 
@@ -103,7 +105,7 @@ function saveState (state) {
   localStorage.setItem(LOCAL_STORE_KEY, JSON.stringify(state))
 }
 
-function generateProductList (response) {
+function generateProductList (startDay, response) {
   return response.products.forEach((product) => {
     const elem = document.createElement('div')
     elem.id = 'productCard'
@@ -154,7 +156,30 @@ function generateProductList (response) {
         addItemButton.value = str
       }
     })
-    picker.setDateRange(new Date(), moment().add(1, 'day'))
+    picker.setDateRange(startDay.toDate(), null)
+  })
+}
+
+function resetModal (modal, startingDay) {
+  modal.querySelector('#results-list').innerHTML = ''
+  modal.dataset.startingday = startingDay
+}
+function generateTableProductRow (state) {
+  const week = getAlignedWeek(state.currentMonday)
+  const tableSecondRow = document.getElementById('tableContentRow')
+  $('addFoodElement').remove()
+  const clickHandler = (e) => {
+    const modal = document.getElementById('modal-js-example')
+    resetModal(modal, e.currentTarget.dataset.startingday)
+    modal.classList.add('is-active')
+  }
+  week.forEach((day) => {
+    const elem = document.createElement('td')
+    elem.id = 'addFoodElement'
+    elem.innerHTML = `<button id='addFood' data-startingday="${day.format()}" class="button is-info" style="width: 20px; height: 20px">+</button>`
+    tableSecondRow.appendChild(elem)
+      .querySelector('#addFood')
+      .onclick = clickHandler
   })
 }
 
@@ -164,7 +189,6 @@ function init () {
   // Event handlers
   $('#searchProductButton').on('click', () => {
     const productName = $('#productNameInput').val()
-    console.log(`Doing search for ${productName}`)
     getNutritionInfo(productName)
   })
   $('#nextPageBtn').on('click', () => {
@@ -183,8 +207,9 @@ function init () {
     saveState(state)
   })
 
-  // Setup UI Dates
+  // Setup UI
   loadDatePage(state.currentMonday)
+  generateTableProductRow(state)
 }
 
 // Modal stuff
