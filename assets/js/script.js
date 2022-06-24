@@ -1,34 +1,6 @@
 /* eslint-disable no-undef */
 // Script Placeholder
 
-async function getNutritionInfo (state, foodId) {
-  // The real API code
-  const options = {
-    method: 'GET',
-    url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/products/search',
-    params: {
-      query: foodEntry,
-      offset: '0',
-      number: '5'
-    },
-    headers: {
-      'X-RapidAPI-Key': 'a0f6075bcemshb0edacc93ae58ecp127f32jsn3d2a6437f6b2',
-      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-    }
-  }
-
-  await axios.request(options).then(function (response) {
-    console.log(response.data)
-    const modal = document.getElementById('modal-js-example')
-    const startingDay = moment(modal.dataset.startingday)
-    resetProductSearchModal(modal, startingDay)
-    generateProductSearchList(state, startingDay, response)
-    $('#result-mount').attr('hidden', false)
-  }).catch(function (error) {
-    console.error(error)
-    return null
-  })
-}
 async function getProductInfo (state, foodEntry) {
   // The real API code
   const options = {
