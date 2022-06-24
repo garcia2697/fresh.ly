@@ -124,6 +124,13 @@ function refreshViewProducts (state) {
     const modal = document.getElementById('modal-productinfo')
     resetProductInfoModal(modal)
     modal.classList.add('is-active')
+    const product = JSON.parse(e.target.dataset.product)
+    const productName = modal.querySelector('#productName')
+    productName.innerHTML = `${product.productName}`
+    const productImgLg = modal.querySelector('#productImageLg')
+    const productImgSm = modal.querySelector('#productImageSm')
+    productImgLg.src = product.productImage
+    productImgSm.src = product.productImage
   }
   const monday = getAlignedStartDate(state.currentMonday)
   state.trackedProducts
@@ -136,6 +143,7 @@ function refreshViewProducts (state) {
           newProduct.classList = `productElement button ${isExpiration ? 'is-danger' : 'is-info'}`
           newProduct.style = 'width: 100px; height: 35px'
           newProduct.innerHTML = `${isExpiration ? '(Exp)' : ''} ${product.productName.slice(0, 7)}`
+          newProduct.dataset.product = JSON.stringify(product)
           newProduct.onclick = clickHandler
           tr.prepend(newProduct)
         }
@@ -147,6 +155,7 @@ function generateProductSearchList (state, startDay, response) {
     const elem = document.createElement('div')
     elem.id = 'productCard'
     elem.dataset.id = product.id
+    elem.dataset.image = product.image
     elem.className = 'card'
     elem.innerHTML = `
   <div class="card-content">
@@ -173,6 +182,7 @@ function generateProductSearchList (state, startDay, response) {
       const product = {
         productId: productCard.dataset.id,
         productName: productCard.querySelector('#product-title').textContent,
+        productImage: productCard.dataset.image,
         dateRange: productCard.querySelector('#expDateInput').value
           .split(' - ')
           .map((date) => moment(date, 'MM/DD/YYYY'))
@@ -202,6 +212,7 @@ function resetProductSearchModal (modal, startingDay) {
   modal.dataset.startingday = startingDay
 }
 function resetProductInfoModal (modal) {
+  
 }
 function generateTableProductRow (state) {
   const week = getAlignedWeek(state.currentMonday)
