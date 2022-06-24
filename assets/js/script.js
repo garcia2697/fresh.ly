@@ -1,7 +1,35 @@
 /* eslint-disable no-undef */
 // Script Placeholder
 
-async function getNutritionInfo (state, foodEntry) {
+async function getNutritionInfo (state, foodId) {
+  // The real API code
+  const options = {
+    method: 'GET',
+    url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/products/search',
+    params: {
+      query: foodEntry,
+      offset: '0',
+      number: '5'
+    },
+    headers: {
+      'X-RapidAPI-Key': 'a0f6075bcemshb0edacc93ae58ecp127f32jsn3d2a6437f6b2',
+      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+    }
+  }
+
+  await axios.request(options).then(function (response) {
+    console.log(response.data)
+    const modal = document.getElementById('modal-js-example')
+    const startingDay = moment(modal.dataset.startingday)
+    resetProductSearchModal(modal, startingDay)
+    generateProductSearchList(state, startingDay, response)
+    $('#result-mount').attr('hidden', false)
+  }).catch(function (error) {
+    console.error(error)
+    return null
+  })
+}
+async function getProductInfo (state, foodEntry) {
   // The real API code
   const options = {
     method: 'GET',
@@ -131,6 +159,22 @@ function refreshViewProducts (state) {
     const productImgSm = modal.querySelector('#productImageSm')
     productImgLg.src = product.productImage
     productImgSm.src = product.productImage
+    const options = {
+      method: 'GET',
+      url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/products/${product.productId}`,
+      headers: {
+        'X-RapidAPI-Key': 'a0f6075bcemshb0edacc93ae58ecp127f32jsn3d2a6437f6b2',
+        'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+      }
+    }
+
+    axios.request(options).then(function (response) {
+      console.log(response)
+      const productNutritionPanel = modal.querySelector('#contentWidget')
+      productNutritionPanel.innerHTML = response.data.description
+    }).catch(function (error) {
+      console.error(error)
+    })
   }
   const monday = getAlignedStartDate(state.currentMonday)
   state.trackedProducts
@@ -212,7 +256,7 @@ function resetProductSearchModal (modal, startingDay) {
   modal.dataset.startingday = startingDay
 }
 function resetProductInfoModal (modal) {
-  
+
 }
 function generateTableProductRow (state) {
   const week = getAlignedWeek(state.currentMonday)
@@ -241,7 +285,7 @@ function init () {
   // Event handlers
   $('#searchProductButton').on('click', () => {
     const productName = $('#productNameInput').val()
-    getNutritionInfo(state, productName)
+    getProductInfo(state, productName)
   })
   $('#nextPageBtn').on('click', () => {
     state.currentMonday.add(1, 'week')
