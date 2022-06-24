@@ -172,6 +172,7 @@ function refreshViewProducts (state) {
       console.log(response)
       const productNutritionPanel = modal.querySelector('#contentWidget')
       productNutritionPanel.innerHTML = response.data.description
+      productNutritionPanel.innerHTML += '<ul>' + response.data.nutrition.nutrients.map((nutrient) => `<li>${nutrient.name}: ${nutrient.amount}${nutrient.unit}</li>`).join('') + '</ul>'
     }).catch(function (error) {
       console.error(error)
     })
