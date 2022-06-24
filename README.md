@@ -5,3 +5,4 @@ Fresh.ly is a neat Web App designed to help the user to track calories as well a
 ![image](https://user-images.githubusercontent.com/102931271/175430510-ad03bfb8-1518-45d6-8eb7-495bec9503cf.png)
 ![image](https://user-images.githubusercontent.com/102931271/175430879-3c689069-f37c-4cdb-a55f-d44a0f2a1684.png)
 
+https://garcia2697.github.io/fresh.ly/index.html
